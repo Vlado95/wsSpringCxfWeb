@@ -11,6 +11,10 @@ public interface IDaoAuteur {
 	
 	public List<Auteur> searchLike(String str);
 	
-	//+ autres methodes CRUD
 	
+	public Auteur insert(Auteur a);
+	
+	public void updateAuteur(Auteur a);
+	
+	public void deleteAuteur(int id);
 }

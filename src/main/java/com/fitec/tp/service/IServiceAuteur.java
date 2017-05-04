@@ -15,7 +15,14 @@ public interface IServiceAuteur {
 	
 	public List<Auteur> tousLesAuteur();
 	
-	public List<Auteur> lesAuteurParNom(String str);
+	public List<Auteur> lesAuteurParNom(@WebParam(name="str") String str);
+	
+	
+    public Auteur ajouterAuteur(@WebParam(name="auteur") Auteur auteur);
+    
+    public void majAuteur(@WebParam(name="auteur") Auteur auteur);
+    
+    public  void  supprimerAutuer(@WebParam(name="id") int id);
 	
 	
 

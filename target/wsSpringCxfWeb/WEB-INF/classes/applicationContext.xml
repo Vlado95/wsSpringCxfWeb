@@ -11,15 +11,24 @@
        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-
+	
+	
+	<import resource="jpaSpringConf.xml" />
+	<import resource="restSpringConf.xml" />
+	
+	
 	<context:annotation-config />
-	<context:component-scan base-package="fitec.tp.service" />
+	<context:component-scan base-package="com.fitec.tp.service, com.fitec.tp.dao, com.fitec.tp.rest" />
+
 
 	<jaxws:endpoint id="calculateurServiceEndpoint"
 		implementor="#calculateurImpl" address="/calculateur" />
-		<!-- implementor="#idServiceSpring" et @Service() sur la classe CalculateurImpl
-		 URL Complete : http://localhost:8080/wsSpringCxfWeb/services/calculateur
-		 ou services est configuré dans web.xml -->
-		 
+	<!-- implementor="#idServiceSpring" et @Service() sur la classe CalculateurImpl 
+		URL Complete : http://localhost:8080/wsSpringCxfWeb/services/calculateur 
+		ou services est configuré dans web.xml -->
+
+	<jaxws:endpoint id="auteurServiceEndpoint"
+		implementor="#serviceAuteurImpl" address="/serviceAuteur" />
+
 	<!-- pour fin d'url en /services/calculateur et /services/calculateur?wsdl -->
 </beans>
