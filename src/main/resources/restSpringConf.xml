@@ -11,19 +11,29 @@
        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-	
+
 	<context:annotation-config />
 	<context:component-scan base-package="com.fitec.tp.rest" />
 
-	<bean id='jacksonJsonProvider' class='com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider' />  <!-- json -->
-<!-- 	<bean id='jacksonXmlProvider' class='com.fasterxml.jackson.jaxrs.xml.JacksonJaxbXMLProvider' /> --> <!-- xml -->
+	<bean id='jacksonJsonProvider'
+		class='com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider' />  <!-- json -->
+	<!-- <bean id='jacksonXmlProvider' class='com.fasterxml.jackson.jaxrs.xml.JacksonJaxbXMLProvider' 
+		/> --> <!-- xml -->
 	<!-- url complete de type "http://localhost:8080/mywebapp/services/rest/myservice/auteurs/" 
-		avec "services" associe à l'url-pattern de CxfServlet dans web.xml et myservice/auteurs
+		avec "services" associe à l'url-pattern de CxfServlet dans web.xml et myservice/auteurs 
 		associé aux valeurs de @Path() de la classe java et des méthodes -->
+
+	<bean id="corsFilter"
+		class="org.apache.cxf.rs.security.cors.CrossOriginResourceSharingFilter">
+		<!-- <property name="allowCredentials" value="true"/> -->
+	</bean>
+
+
 	<jaxrs:server id="myRestServices" address="/rest">
 		<jaxrs:providers>
 			<ref bean='jacksonJsonProvider' />  <!-- json -->
-<!-- 			<ref bean='jacksonXmlProvider' /> --> <!-- xml -->
+			<!-- <ref bean='jacksonXmlProvider' /> --> <!-- xml -->
+			<ref bean='corsFilter' /> 
 		</jaxrs:providers>
 		<jaxrs:serviceBeans>
 			<ref bean="serviceAuteurRest" /> <!-- @Component ou @Service sur ServiceAuteurRest -->

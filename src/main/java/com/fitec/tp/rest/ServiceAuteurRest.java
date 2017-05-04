@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.cxf.rs.security.cors.CrossOriginResourceSharing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,7 @@ import com.fitec.tp.service.IServiceAuteur;
 @Path("/auteurs")
 @Produces("application/json")
 @Consumes("application/json")
+@CrossOriginResourceSharing(allowAllOrigins=true)
 @Component // ou @Service (info :herite de component) : pour prise en charge
 			// Spring
 public class ServiceAuteurRest {

@@ -1,121 +1,130 @@
-   <html >
-    <head>
-	<script src="jquery-2.2.1.js"></script>
+
+<html>
+<head>
+<script src="jquery-2.2.1.js"></script>
 <!-- 	<script src="jquery.cookie.js"></script> -->
-    <script>
-	  var auteurList;
-	  var auteurIdSelected;//id=.id
-	  var auteurSelected;
-	  
-	  function display_selected_auteur(){
-	             $("#spanMsg").html( "selected auteur:" + auteurIdSelected) ;
-				 $('#spanId').html(auteurSelected.id);
-				 $('#txtNom').val(auteurSelected.nom);
-				 $('#txtPrenom').val(auteurSelected.prenom);
-// 				 $('#txtNom').val(auteurSelected.nom);
-// 				 $('#txtPrenom').val(auteurSelected.prenom);
-	  }
-	
-	  function local_update_selected_auteur(){	
-// 		  auteurIdSelected =$('#spanId').val()
-		  auteurSelected.nom = $('#txtNom').val();
-		  auteurSelected.prenom= $('#txtPrenom').val();
- 		  alert(JSON.stringify(auteurSelected)); 
+<script>
+	var auteurList;
+	var auteurIdSelected;//id=.id
+	var auteurSelected;
+
+	function display_selected_auteur() {
+		$("#spanMsg").html("selected auteur:" + auteurIdSelected);
+		$('#spanId').html(auteurSelected.id);
+		$('#txtNom').val(auteurSelected.nom);
+		$('#txtPrenom').val(auteurSelected.prenom);
+		// 				 $('#txtNom').val(auteurSelected.nom);
+		// 				 $('#txtPrenom').val(auteurSelected.prenom);
+	}
+
+	function local_update_selected_auteur() {
+		// 		  auteurIdSelected =$('#spanId').val()
+		auteurSelected.nom = $('#txtNom').val();
+		auteurSelected.prenom = $('#txtPrenom').val();
+		alert(JSON.stringify(auteurSelected));
 		//  alert("update selected auteur"); 
-	  }
-	  
-      $(function() {
-	 	  
-	    $.ajax({
-           type: "GET",
-           url: "services/rest/auteurs/all",
-		   success: function (data,status,xhr) {
-			   /*if(xhr){
+	}
+
+	$(function() {
+
+		$.ajax({
+			type : "GET",
+			url : "services/rest/auteurs/all",
+			success : function(data, status, xhr) {
+				/*if(xhr){
 				   var csrfToken = xhr.getResponseHeader("Content-Type");// "Content-Type"				
 				   //alert(csrfToken);
-			   }*/
-               if (data) {
-			       //alert(JSON.stringify(data));
-			       auteurList = data;
-				   for(auteurIndex in auteurList){
-				       var auteur=auteurList[auteurIndex];
-					   if(auteurIndex==0)
-					      { auteurSelected = auteur; auteurIdSelected = auteur.id; }
-				      //alert(JSON.stringify(auteur));
-				       $('#selAuteur').append('<option  value="'+ auteur.id +'">'+ auteur.id + ' (' + auteur.nom + ')</option>');					   
-				   }
-				   display_selected_auteur();
-               } else {
-                   $("#spanMsg").html("Cannot GET auteurs");
-               }
-           }
-		   });
-        
-		
-	    //for spring-mvc RESTful WS and spring-security with CookieCsrfTokenRepository
-//	    var xsrfToken = $.cookie('XSRF-TOKEN');//necessite plugin jquery-cookie
-	    //alert(xsrfToken);
-// 	    if(xsrfToken){
-// 	      $(document).ajaxSend(function(e, xhr, options) {
-// 	    	        xhr.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
-// 	    	});
-// 	    }
-	    
-		$('#btnUpdate').on('click',function(){
-		// local_update_selected_auteur();
-		 local_update_selected_auteur();
-		 
-		//$("#spanMsg").html( "message in the bottle" + JSON.stringify(auteurSelected) ) ;
-		 $.ajax({
-           type: "PUT",
-           url: "services/rest/auteurs/" +auteurIdSelected,
-       
-           contentType : "application/json ; charset=UTF-8",
-           dataType: "json",
-		   data: JSON.stringify(auteurSelected),
-           success: function (updatedData) {
-               if (updatedData) {
-                  $("#spanMsg").html("updated data (server side):" + JSON.stringify(updatedData));
-               //   alert("lol");
-               } else {
-                   $("#spanMsg").html("Cannot PUT updated data");
-               }
-           },
-           error: function(xhr, status, error){
-        	   $("#spanMsg").html( "status:" + status + " error : " + error ) ;
-           }
-		   });
+				}*/
+				if (data) {
+					auteurList = data;
+					for (auteurIndex in auteurList) {
+						var auteur = auteurList[auteurIndex];
+						if (auteurIndex == 0) {
+							auteurSelected = auteur;
+							auteurIdSelected = auteur.id;
+						}
+						$('#selAuteur').append(
+								'<option  value="'+ auteur.id +'">' + auteur.id
+										+ ' (' + auteur.nom + ')</option>');
+					}
+					display_selected_auteur();
+				} else {
+					$("#spanMsg").html("Cannot GET auteurs");
+				}
+			}
 		});
-	
-		
-		$('#selAuteur').on('change',function(evt){
-		         auteurIdSelected = $(evt.target).val();
-				 for(auteurIndex in auteurList){
-				       var auteur=auteurList[auteurIndex];
-					   if(auteur.Id == auteurIdSelected)
-						   auteurSelected  = auteur;
-				 }
-				 display_selected_auteur();
+
+		//for spring-mvc RESTful WS and spring-security with CookieCsrfTokenRepository
+		//	    var xsrfToken = $.cookie('XSRF-TOKEN');//necessite plugin jquery-cookie
+		//alert(xsrfToken);
+		// 	    if(xsrfToken){
+		// 	      $(document).ajaxSend(function(e, xhr, options) {
+		// 	    	        xhr.setRequestHeader('X-XSRF-TOKEN', xsrfToken);
+		// 	    	});
+		// 	    }
+
+		$('#btnUpdate').on(
+				'click',
+				function() {
+					local_update_selected_auteur();
+
+					//$("#spanMsg").html( "message in the bottle" + JSON.stringify(auteurSelected) ) ;
+					$.ajax({
+						type : "PUT",
+						url : "services/rest/auteurs/" + auteurIdSelected,
+
+						contentType : "application/json ; charset=UTF-8",
+						dataType : "json",
+						data : JSON.stringify(auteurSelected),
+						success : function(updatedData) {
+							if (updatedData) {
+								$("#spanMsg").html(
+										"updated data (server side):"
+												+ JSON.stringify(updatedData));
+							} else {
+								$("#spanMsg").html("Cannot PUT updated data");
+							}
+						},
+						error : function(xhr, status, error) {
+							$("#spanMsg").html(
+									"status:" + status + " error : " + error);
+						}
+					});
+					location.reload();
+				});
+
+		$('#selAuteur').on('change', function(evt) {
+			auteurIdSelected = $(evt.target).val();
+
+			for (auteurIndex in auteurList) {
+				var auteur = auteurList[auteurIndex];
+				if (auteur.id == auteurIdSelected)
+
+					auteurSelected = auteur;
+			}
+			display_selected_auteur();
 		});
-      }); 
-   </script>
-   </head>
-     <body>
-	
-       <h3> JSON tests for auteur app (REST/JSON via spring) <h3>
-<!-- 	   <a href="service/rest/devises/EUR"> auteur avec code=EUR </a> <br/> -->
-<!-- 	   <a href="mvc/rest/devises/?name=dollar"> devises avec name=dollar </a> <br/> -->
-<!-- 	   <a href="mvc/rest/devises/"> toutes les devises</a> <br/> -->
-<!-- 	   <a href="mvc/rest/devises/convert?amount=50&src=euro&target=dollar"> 50 euros en dollar</a> <br/> -->
-      <hr/>
-	  auteur (to update) : <select id="selAuteur"> </select>
-	  <hr/>
-	  id : <span id="spanId" ></span><br/>
-	  nom : <input id="txtNom" type='text' /><br/>
-	  prenom : <input id="txtPrenom" type='text' /><br/>
-	  <input type='button' value="update auteur" id="btnUpdate"/> <br/>
-	  <span id="spanMsg"></span> <br/>
-	  <hr/>
-	  <a href="index.html">retour vers index.html</a>
-	  </body>
-     </html>
+	});
+</script>
+</head>
+<body>
+
+	<h3>
+		JSON tests for auteur app (REST/JSON via spring)
+		<h3>
+			<!-- 	   <a href="service/rest/devises/EUR"> auteur avec code=EUR </a> <br/> -->
+			<!-- 	   <a href="mvc/rest/devises/?name=dollar"> devises avec name=dollar </a> <br/> -->
+			<!-- 	   <a href="mvc/rest/devises/"> toutes les devises</a> <br/> -->
+			<!-- 	   <a href="mvc/rest/devises/convert?amount=50&src=euro&target=dollar"> 50 euros en dollar</a> <br/> -->
+			<hr />
+			auteur (to update) : <select id="selAuteur">
+			</select>
+			<hr />
+			id : <span id="spanId"></span><br /> nom : <input id="txtNom"
+				type='text' /><br /> prenom : <input id="txtPrenom" type='text' /><br />
+			<input type='button' value="update auteur" id="btnUpdate" /> <br /> <span
+				id="spanMsg"></span> <br />
+			<hr />
+			<a href="index.html">retour vers index.html</a>
+</body>
+</html>
